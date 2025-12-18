@@ -37,14 +37,27 @@ Excel には最低限 `馬番`、`馬名` の列があるとスムーズです�
 
 列名が不足していても動作しますが、スコアリングの精度が下がります。
 
-## コンフリクトを避けるための上書き用ファイル
+## コンフリクトを避けるための上書き用ファイルと手順
 
-Git のコンフリクトが発生した場合は、`bundle/` 配下に現在の正規版ファイルを複製しています。必要に応じて以下をルートに上書きコピーしてください。
+GitHub 上で「Resolve conflicts」の画面が出た場合は、下記いずれかの方法で **bundle 内の正規版で全上書き** してください。
 
-- `bundle/app.py` → `app.py`
-- `bundle/app_utils.py` → `app_utils.py`
-- `bundle/requirements.txt` → `requirements.txt`
-- `bundle/README.md` → `README.md`
-- `bundle/data/arima_sample.csv` → `data/arima_sample.csv`
+1. 画面上で上書きする場合
+   - 衝突している各ファイルで `<<<<<<<` から `>>>>>>>` までを **すべて削除** し、下記ファイルを開いて中身を丸ごとコピー＆ペーストします。
+   - 貼り付け先とコピー元の対応
+     - `bundle/app.py` → `app.py`
+     - `bundle/app_utils.py` → `app_utils.py`
+     - `bundle/requirements.txt` → `requirements.txt`
+     - `bundle/README.md` → `README.md`
+     - `bundle/data/arima_sample.csv` → `data/arima_sample.csv`
+   - すべて貼り替えたら「Mark as resolved」を押して保存してください。
 
-これらをそのまま上書きすれば、最新版にリセットできます。
+2. 手元で上書きしてプッシュする場合
+   - ルートで以下を実行すると bundle 版で上書きできます。
+
+     ```bash
+     ./apply_bundle.sh
+     git status  # 差分確認
+     git add . && git commit -m "Reset files from bundle" && git push
+     ```
+
+どちらの方法でも、bundle 配下の内容をそのまま上書きすれば最新版にリセットできます。
